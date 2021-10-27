@@ -17,7 +17,6 @@ More important is **external data is NOT allowed to train your model!**
 
 ### Data preprocessing
 - **Split Dataset**
-    - 
 - **Resize Image**
 - **Data Augmentation**
 
