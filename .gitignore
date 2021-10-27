@@ -1,0 +1,4 @@
+data/train
+data/test
+data/testing_img_order.txt
+data/training_labels.txt
