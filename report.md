@@ -14,6 +14,7 @@ e.g., tree sparrow or mockingbird, for training images is 3,000 and testing imag
 More important is **external data is NOT allowed to train your model!**
 
 ## Methodology
+
 ### Data preprocessing
 - **Split Dataset**
     - 
