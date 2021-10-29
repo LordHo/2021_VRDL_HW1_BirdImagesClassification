@@ -89,7 +89,7 @@ def test_model(model, dataloader, result_path):
 
 if __name__ == '__main__':
     # Load trained model
-    model_name = 'resnet_2021-10-28 12-00-17'
+    model_name = 'inception_2021-10-28 14-26-03'
     model_path = os.path.join('..', 'model', f'{model_name}.pkl')
     model = load_model(model_path)
 

@@ -195,7 +195,7 @@ if __name__ == '__main__':
     batch_size = 8
 
     # Number of epochs to train for
-    num_epochs = 200
+    num_epochs = 100
 
     # Flag for feature extracting. When False, we finetune the whole model,
     #   when True we only update the reshaped layer params
@@ -214,12 +214,12 @@ if __name__ == '__main__':
         'train': transforms.Compose([
             transforms.Resize((input_size, input_size)),
             # transforms.RandomResizedCrop(input_size),
-            transforms.RandomRotation(degrees=(-45, 45)),
+            # transforms.RandomRotation(degrees=(-45, 45)),
             # transforms.RandomAffine(
             #     degrees=(-10, 10), translate=(0.1, 0.3), scale=(0.75, 0.9)),
             # transforms.RandomAdjustSharpness(sharpness_factor=2),
-            transforms.RandomHorizontalFlip(p=0.5),
-            transforms.RandomVerticalFlip(p=0.5),
+            # transforms.RandomHorizontalFlip(p=0.5),
+            # transforms.RandomVerticalFlip(p=0.5),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
@@ -266,7 +266,9 @@ if __name__ == '__main__':
                 print("\t", name)
 
     # Observe that all parameters are being optimized
-    optimizer_ft = optim.SGD(params_to_update, lr=0.001, momentum=0.9)
+    # optimizer_ft = optim.SGD(params_to_update, lr=1e-2,
+    #                          momentum=0.9, weight_decay=1e-3)
+    optimizer_ft = optim.Adam(params_to_update, lr=1e-3, weight_decay=5e-4)
 
     # Setup the loss fxn
     criterion = nn.CrossEntropyLoss()
