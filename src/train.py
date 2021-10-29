@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import time
 import os
 import copy
+import timm
 
 
 def set_parameter_requires_grad(model, feature_extracting):
@@ -83,6 +84,23 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
         num_ftrs = model_ft.fc.in_features
         model_ft.fc = nn.Linear(num_ftrs, num_classes)
         input_size = 299
+
+    # original 'swin_transformer'
+    elif model_name == 'swin_transformer_base_224':
+        model_ft = timm.create_model(
+            'swin_base_patch4_window7_224_in22k', pretrained=True)
+        set_parameter_requires_grad(model_ft, feature_extract)
+        num_ftrs = model_ft.head.in_features
+        model_ft.head = nn.Linear(num_ftrs, num_classes)
+        input_size = 224
+
+    elif model_name == 'swin_transformer_large_384':
+        model_ft = timm.create_model(
+            'swin_large_patch4_window12_384_in22k', pretrained=True)
+        set_parameter_requires_grad(model_ft, feature_extract)
+        num_ftrs = model_ft.head.in_features
+        model_ft.head = nn.Linear(num_ftrs, num_classes)
+        input_size = 384
 
     else:
         print("Invalid model name, exiting...")
@@ -185,8 +203,8 @@ if __name__ == '__main__':
     #   to the ImageFolder structure
     data_dir = os.path.join("..", "data")
 
-    # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
-    model_name = "inception"
+    # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception, swin_transformer_base_224, swin_transformer_large_384]
+    model_name = "swin_transformer_large_384"
 
     # Number of classes in the dataset
     num_classes = 200
@@ -195,7 +213,7 @@ if __name__ == '__main__':
     batch_size = 8
 
     # Number of epochs to train for
-    num_epochs = 100
+    num_epochs = 10
 
     # Flag for feature extracting. When False, we finetune the whole model,
     #   when True we only update the reshaped layer params

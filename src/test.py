@@ -19,6 +19,11 @@ class_dict = {}
 train_class = {}
 
 
+def createDir(dir_path):
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+
+
 def load_classes():
     classes_file_path = os.path.join('..', 'data', 'classes.txt')
     classes_file = open(classes_file_path, 'r')
@@ -58,8 +63,53 @@ class TestDataset(Dataset):
         return len(self.images)
 
 
-def load_model(model_path):
-    return torch.load(model_path)
+def load_model(model_path, model_name):
+    model_ft = torch.load(model_path)
+    input_size = 0
+
+    if model_name == "resnet":
+        """ Resnet18
+        """
+        input_size = 224
+
+    elif model_name == "alexnet":
+        """ Alexnet
+        """
+        input_size = 224
+
+    elif model_name == "vgg":
+        """ VGG11_bn
+        """
+        input_size = 224
+
+    elif model_name == "squeezenet":
+        """ Squeezenet
+        """
+        input_size = 224
+
+    elif model_name == "densenet":
+        """ Densenet
+        """
+        input_size = 224
+
+    elif model_name == "inception":
+        """ Inception v3
+        Be careful, expects (299,299) sized images and has auxiliary output
+        """
+        input_size = 299
+
+    # original 'swin_transformer'
+    elif model_name == 'swin_transformer_base_224':
+        input_size = 224
+
+    elif model_name == 'swin_transformer_large_384':
+        input_size = 384
+
+    else:
+        print("Invalid model name, exiting...")
+        exit()
+
+    return model_ft, input_size
 
 
 def test_model(model, dataloader, result_path):
@@ -89,15 +139,16 @@ def test_model(model, dataloader, result_path):
 
 if __name__ == '__main__':
     # Load trained model
-    model_name = 'inception_2021-10-28 14-26-03'
-    model_path = os.path.join('..', 'model', f'{model_name}.pkl')
-    model = load_model(model_path)
+    model_name = 'swin_transformer_large_384'
+    timestamp = '2021-10-29 14-46-22'
+    model_path = os.path.join('..', 'model', f'{model_name}_{timestamp}.pkl')
+    model, input_size = load_model(model_path, model_name)
 
     timestamp = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime())
 
     # Create training and validation datasets
     image_dataset = TestDataset(os.path.join(
-        '..', 'data', 'testing_img_order.txt'), os.path.join('..', 'data', 'test'), input_size=224)
+        '..', 'data', 'testing_img_order.txt'), os.path.join('..', 'data', 'test'), input_size=input_size)
     # Create training and validation dataloaders
     dataloader = DataLoader(image_dataset, batch_size=1)
 
@@ -110,6 +161,10 @@ if __name__ == '__main__':
     load_classes()
     load_tain_class()
 
+    result_dir = os.path.join(
+        '..', 'result', f'{model_name}_test_{timestamp}')
+    createDir(result_dir)
     result_path = os.path.join(
-        '..', 'result', f'{model_name}_test_{timestamp}.txt')
+        result_dir, f'{model_name}_test_{timestamp}.txt')
+
     test_model(model, dataloader, result_path)

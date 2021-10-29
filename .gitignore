@@ -6,3 +6,6 @@ data/training_labels.txt
 model
 result
 train/*.tmp
+test_timm.py
+src/model_structure
+src/model list.txt
