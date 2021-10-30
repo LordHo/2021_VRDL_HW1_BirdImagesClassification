@@ -22,10 +22,7 @@ To train the model(s) in the paper, run this command:
 python train.py
 ```
 
-:::info
-Please modify `model_name` to the model you wanted.
-:::
-
+> Please modify `model_name` to the model you wanted.  
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
 ## Evaluation
