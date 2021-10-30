@@ -43,6 +43,8 @@ The data contains images similar to those in ImageNet, we use model that has bee
 
 ### Ensemble - Bagging
 
+Schedule in future days.
+
 ### Model Architecture
 
 * **ResNet50**
@@ -67,7 +69,7 @@ The data contains images similar to those in ImageNet, we use model that has bee
 
 ## Summary
 
-  Something not finish yet.
+Something not finish yet.
 
 ## References
 

@@ -1,4 +1,4 @@
-# 2021_VRDL_HW1_BirdImagesClassification
+# 2021 VRDL HW1: Bird Images Classification
 
 This repository is the HW1 of 2021 Selected Topics in Visual Recognition using Deep Learning in NYCU.
 
@@ -19,8 +19,12 @@ pip install -r requirements.txt
 To train the model(s) in the paper, run this command:
 
 ```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+python train.py
 ```
+
+:::info
+Please modify `model_name` to the model you wanted.
+:::
 
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
 
@@ -48,14 +52,15 @@ Our model achieves the following performance on :
 
 ### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
 
-| Model name   | Top 1 Accuracy | Top 5 Accuracy |
-| ------------ | -------------- | -------------- |
-| ResNet50     | -              | -              |
-| Inception V3 | -              | -              |
+|    Model name    | Pre-trained | image size | Top 1 Accuracy |
+| :--------------: | :---------: | :--------: | :------------: |
+|     ResNet50     |      -      |    224     |       -        |
+|   Inception V3   |      -      |    299     |       -        |
+| Swin transformer |      -      |    224     |       -        |
+| Swin transformer |      -      |    384     |       -        |
 
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
+>📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it.
 
 ## Contributing
 
->📋  Pick a licence and describe how to contribute to your code repository. 
+>📋  Pick a licence and describe how to contribute to your code repository.
