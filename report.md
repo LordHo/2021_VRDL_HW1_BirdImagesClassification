@@ -8,7 +8,7 @@ Model Pakage: [PyTorch Image Models](https://github.com/rwightman/pytorch-image-
 ## Introdunction
 
 The homework is to classify 200 species of birds. This problem is called fine-grained image classification.
-It's a hard problem in Computer Vision. The data provided from TA is similar as public dataset - [CUB-200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html), but it's not the same. In this homework, it need to use the SOTA model to achieve the high accuracy.
+It's a hard problem in Computer Vision. The data provided from TA is similar as public dataset - [CUB-200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html), but it's not the same. In this homework, it need to use the state-of-the-art models to achieve the high accuracy.
 
 ## Data
 
@@ -39,18 +39,20 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 
 ### Transfer Learning
 
+The data contains images similar to those in ImageNet, we use model that has been pretrained on ImageNet. I replace the output of final fully connected layer in model to 200 classes and fine-tune the model to fit our data. In this homework, various state-of-the-art models are tested to get higher performace, such as ResNet-50 [1], Inception V3 [2], Swin Transformer[3], etc.
+
 ### Ensemble - Bagging
 
 ### Model Architecture
 
 * **ResNet50**
-  * [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+  * Deep Residual Learning for Image Recognition [1](https://arxiv.org/abs/1512.03385)
 
 * **Inception V3**
-  * [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
+  * Going Deeper with Convolutions [2](https://arxiv.org/abs/1409.4842)
 
 * **Swin Transformer**
-  * [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)
+  * Swin Transformer: Hierarchical Vision Transformer using Shifted Windows [3](https://arxiv.org/pdf/2103.14030.pdf)
 
 ### Hyperparameters
 
@@ -66,3 +68,10 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 ## Summary
 
   Something not finish yet.
+
+## References
+
+[1] [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+[2] [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
+[3] [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)
+[4] [CarClassifier](https://github.com/Yunyung/CarClassifier)
