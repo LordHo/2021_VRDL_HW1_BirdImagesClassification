@@ -1,6 +1,6 @@
 # 2021_VRDL_HW1_BirdImagesClassification
 
-This repository is the HW1 of 2021 Selected Topics in Visual Recognition using Deep Learning in NYCU. 
+This repository is the HW1 of 2021 Selected Topics in Visual Recognition using Deep Learning in NYCU.
 
 >📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
 
@@ -48,10 +48,10 @@ Our model achieves the following performance on :
 
 ### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
 
-| Model name     | Top 1 Accuracy  | Top 5 Accuracy |
-| -------------- |---------------- | -------------- |
-| ResNet50       |       -         |       -        |
-| Inception V3   |       -         |       -        |
+| Model name   | Top 1 Accuracy | Top 5 Accuracy |
+| ------------ | -------------- | -------------- |
+| ResNet50     | -              | -              |
+| Inception V3 | -              | -              |
 
 >📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
 
