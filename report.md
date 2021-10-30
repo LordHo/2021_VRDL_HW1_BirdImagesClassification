@@ -22,9 +22,7 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
   * I split the 3,000 training images into training and validation. Training part is 2,400 images, and validation part is 600 images. The model weight is selected by the accuracy of validation.
 
 * **Resize Image**
-  * You can select different models, and each of them have different target size. When loading the image, it'll resize the image first. I use
-    transforms.Resize
-  to resize the image.
+  * You can select different models, and each of them have different target size. When loading the image, it'll resize the image first. I use `transforms.Resize` to resize the image.
     |      model       | target size |
     | :--------------: | :---------: |
     |     ResNet50     |     224     |
