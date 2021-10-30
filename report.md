@@ -17,8 +17,21 @@ More important is **external data is NOT allowed to train your model!**
 
 ### Data preprocessing
 - **Split Dataset**
+    - I split the 3,000 training images into training and validation. Training part is 2,400 images, and validation part is 600 images.
 - **Resize Image**
+    - You can select different models, and each of them have different target size.
+        |      model       | target size |
+        |:----------------:|:-----------:|
+        |     ResNet50     |     224     |
+        |   Inception V3   |     299     |
+        | Swin Transformer |     224     |
+        | Swin Transformer |     384     |
 - **Data Augmentation**
+    - Augmentation on Training part
+        - transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    - Augmentation on Validation part
+        - transforms.CenterCrop(target_size)
+        - transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])    
 
 ### Transfer Learning
 
@@ -29,13 +42,15 @@ More important is **external data is NOT allowed to train your model!**
     - [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
 - **Inception V3**
     - [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
+- **Swin Transformer**
+    - [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)
 
 ### Hyperparameters
 - **Loss Function**
     - CrossEntropyLoss
 - **Optimizer** 
-    - SGD with learning rate = 1e-3 and momentum = 0.9
+    - Adam with learning rate=1e-3 and weight decay=5e-4
 - **Epochs** 
-    - 50 epoch
+    - 10 epoch
 
 ## Summary
