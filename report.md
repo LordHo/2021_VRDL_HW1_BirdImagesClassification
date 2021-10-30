@@ -32,10 +32,10 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 
 * **Data Augmentation**
   * Augmentation on Training part
-    * transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    * `transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])`
   * Augmentation on Validation part
-    * transforms.CenterCrop(target_size)
-    * transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    * `transforms.CenterCrop(target_size)`
+    * `transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])`
 
 ### Transfer Learning
 
