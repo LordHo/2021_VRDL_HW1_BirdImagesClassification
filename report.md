@@ -71,7 +71,7 @@ The data contains images similar to those in ImageNet, we use model that has bee
 
 ## References
 
-[1] [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
-[2] [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)
-[3] [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)
+[1] [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)  
+[2] [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)  
+[3] [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)  
 [4] [CarClassifier](https://github.com/Yunyung/CarClassifier)
