@@ -16,14 +16,14 @@ pip install -r requirements.txt
 
 ## Training
 
-To train the model(s) in the paper, run this command:
+To train the model(s) in the project, run this command:
 
 ```train
 python train.py
 ```
 
 > Please modify `model_name` to the model you wanted.  
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
+> Model name can be select in `['resnet', 'inception', 'swin_transformer_base_224', 'swin_transformer_large_384']`.
 
 ## Evaluation
 
