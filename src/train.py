@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+from torch.optim import optimizer
 import torchvision
 from torchvision import datasets, models, transforms
 import matplotlib.pyplot as plt
@@ -13,15 +14,54 @@ import copy
 import timm
 
 
+def create_dir(dir_path):
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+
+
+class Log:
+    def __init__(self, result_dir):
+        self.log_path = os.path.join(result_dir, 'log.txt')
+        self.log = None
+        self.row_counts = 0
+
+    def start_loging(self):
+        self.log = open(self.log_path, 'w')
+
+    def end_loging(self):
+        self.log.close()
+
+    def message_loging(self, message):
+        if self.row_counts == 0:
+            self.log.write(message)
+        else:
+            self.log.write('\n' + message)
+        self.row_counts += 1
+
+
 def set_parameter_requires_grad(model, feature_extracting):
     if feature_extracting:
         for param in model.parameters():
             param.requires_grad = False
 
 
+def initialize_optimizer(optimizer_name, lr=None, weight_decay=None):
+    # Set the learning rate and weight decay, default is 1e-3 and 1e-4
+    lr = 1e-3 if lr is None else lr
+    weight_decay = lr*0.1 if weight_decay is None else weight_decay
+    if optimizer_name == 'Adam':
+        optimizer = optim.Adam(params_to_update, lr=lr,
+                               weight_decay=weight_decay)
+    else:
+        print("Invalid optimizer name, exiting...")
+        exit()
+
+    return optimizer, lr, weight_decay
+
+
 def initialize_model(model_name, num_classes, feature_extract, use_pretrained=True):
-    # Initialize these variables which will be set in this if statement. Each of these
-    #   variables is model specific.
+    # Initialize these variables which will be set in this if statement.
+    # Each of these variables is model specific.
     model_ft = None
     input_size = 0
 
@@ -34,46 +74,9 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
         model_ft.fc = nn.Linear(num_ftrs, num_classes)
         input_size = 224
 
-    # elif model_name == "alexnet":
-    #     """ Alexnet
-    #     """
-    #     model_ft = models.alexnet(pretrained=use_pretrained)
-    #     set_parameter_requires_grad(model_ft, feature_extract)
-    #     num_ftrs = model_ft.classifier[6].in_features
-    #     model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
-    #     input_size = 224
-
-    # elif model_name == "vgg":
-    #     """ VGG11_bn
-    #     """
-    #     model_ft = models.vgg11_bn(pretrained=use_pretrained)
-    #     set_parameter_requires_grad(model_ft, feature_extract)
-    #     num_ftrs = model_ft.classifier[6].in_features
-    #     model_ft.classifier[6] = nn.Linear(num_ftrs, num_classes)
-    #     input_size = 224
-
-    # elif model_name == "squeezenet":
-    #     """ Squeezenet
-    #     """
-    #     model_ft = models.squeezenet1_0(pretrained=use_pretrained)
-    #     set_parameter_requires_grad(model_ft, feature_extract)
-    #     model_ft.classifier[1] = nn.Conv2d(
-    #         512, num_classes, kernel_size=(1, 1), stride=(1, 1))
-    #     model_ft.num_classes = num_classes
-    #     input_size = 224
-
-    # elif model_name == "densenet":
-    #     """ Densenet
-    #     """
-    #     model_ft = models.densenet121(pretrained=use_pretrained)
-    #     set_parameter_requires_grad(model_ft, feature_extract)
-    #     num_ftrs = model_ft.classifier.in_features
-    #     model_ft.classifier = nn.Linear(num_ftrs, num_classes)
-    #     input_size = 224
-
     elif model_name == "inception":
         """ Inception v3
-        Be careful, expects (299,299) sized images and has auxiliary output
+            Be careful, expects (299,299) sized images and has auxiliary output
         """
         model_ft = models.inception_v3(pretrained=use_pretrained)
         set_parameter_requires_grad(model_ft, feature_extract)
@@ -118,7 +121,9 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
     best_acc = 0.0
 
     for epoch in range(num_epochs):
+        log.message_loging(f"Epoch {epoch}/{num_epochs - 1}")
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
+        log.message_loging('-' * 10)
         print('-' * 10)
 
         # Each epoch has a training and validation phase
@@ -173,6 +178,8 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
+            log.message_loging(
+                f"{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}")
 
             # deep copy the model
             if phase == 'val' and epoch_acc > best_acc:
@@ -182,11 +189,16 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
                 val_acc_history.append(epoch_acc)
 
         print()
+        log.message_loging("")
 
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
+    log.message_loging(
+        f"Training complete in {time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s")
+
     print('Best val Acc: {:4f}'.format(best_acc))
+    log.message_loging(f"Best val Acc: {best_acc:4f}")
 
     # load best model weights
     model.load_state_dict(best_model_wts)
@@ -194,55 +206,70 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
 
 if __name__ == '__main__':
-    print("PyTorch Version: ", torch.__version__)
-    print("Torchvision Version: ", torchvision.__version__)
-
+    # Create model and log directory
     timestamp = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime())
+    result_dir = os.path.join('..', 'model', timestamp)
+    create_dir(result_dir)
 
-    # Top level data directory. Here we assume the format of the directory conforms
-    #   to the ImageFolder structure
+    # Create log file and start loging
+    log = Log(result_dir)
+    log.start_loging()
+
+    log.message_loging(f"PyTorch Version: {torch.__version__}")
+    print(f"PyTorch Version: {torch.__version__}")
+
+    log.message_loging(f"Torchvision Version: {torchvision.__version__}")
+    print(f"Torchvision Version: {torchvision.__version__}")
+
+    # Assign the train and validation data directory
     data_dir = os.path.join("..", "data")
 
-    # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception, swin_transformer_base_224, swin_transformer_large_384]
+    # Models to choose from [resnet, inception, swin_transformer_base_224, swin_transformer_large_384]
     model_name = "swin_transformer_large_384"
+    log.message_loging(f"Train model name: {model_name}")
+    print(f"Train model name: {model_name}")
 
     # Number of classes in the dataset
     num_classes = 200
+    log.message_loging(f"Number of predict classes: {num_classes}")
+    print(f"Number of predict classes: {num_classes}")
 
     # Batch size for training (change depending on how much memory you have)
     batch_size = 8
+    log.message_loging(f"Train batch size: {batch_size}")
+    print(f"Train batch size: {batch_size}")
 
     # Number of epochs to train for
     num_epochs = 10
+    log.message_loging(f"Train epochs: {num_epochs}")
+    print(f"Train epochs: {num_epochs}")
 
     # Flag for feature extracting. When False, we finetune the whole model,
     #   when True we only update the reshaped layer params
     feature_extract = True
+    log.message_loging(
+        f"Feature extract: {'True' if feature_extract else 'False'}")
+    print(f"Feature extract: {'True' if feature_extract else 'False'}")
 
     # Initialize the model for this run
     model_ft, input_size = initialize_model(
         model_name, num_classes, feature_extract, use_pretrained=True)
 
     # Print the model we just instantiated
-    print(model_ft)
+    # print(model_ft)
 
     # Data augmentation and normalization for training
     # Just normalization for validation
     data_transforms = {
         'train': transforms.Compose([
             transforms.Resize((input_size, input_size)),
-            # transforms.RandomResizedCrop(input_size),
-            # transforms.RandomRotation(degrees=(-45, 45)),
-            # transforms.RandomAffine(
-            #     degrees=(-10, 10), translate=(0.1, 0.3), scale=(0.75, 0.9)),
-            # transforms.RandomAdjustSharpness(sharpness_factor=2),
-            # transforms.RandomHorizontalFlip(p=0.5),
-            # transforms.RandomVerticalFlip(p=0.5),
+            transforms.RandomRotation(degrees=(-45, 45)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.RandomVerticalFlip(p=0.5),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ]),
         'val': transforms.Compose([
-            # transforms.Resize(input_size),
             transforms.Resize((input_size, input_size)),
             transforms.CenterCrop(input_size),
             transforms.ToTensor(),
@@ -255,12 +282,15 @@ if __name__ == '__main__':
     # Create training and validation datasets
     image_datasets = {x: datasets.ImageFolder(os.path.join(
         data_dir, x), data_transforms[x]) for x in ['train', 'val']}
+
     # Create training and validation dataloaders
     dataloaders_dict = {x: torch.utils.data.DataLoader(
         image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
 
     # Detect if we have a GPU available
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    log.message_loging(f"Device: {device}")
+    print(f"Device: {device}")
 
     # Send the model to GPU
     model_ft = model_ft.to(device)
@@ -271,31 +301,42 @@ if __name__ == '__main__':
     #  that we have just initialized, i.e. the parameters with requires_grad
     #  is True.
     params_to_update = model_ft.parameters()
+    log.message_loging("Params to learn:")
     print("Params to learn:")
     if feature_extract:
         params_to_update = []
         for name, param in model_ft.named_parameters():
             if param.requires_grad == True:
                 params_to_update.append(param)
+                log.message_loging(f"\t {name}")
                 print("\t", name)
     else:
         for name, param in model_ft.named_parameters():
             if param.requires_grad == True:
+                log.message_loging(f"\t {name}")
                 print("\t", name)
 
     # Observe that all parameters are being optimized
-    # optimizer_ft = optim.SGD(params_to_update, lr=1e-2,
-    #                          momentum=0.9, weight_decay=1e-3)
-    optimizer_ft = optim.Adam(params_to_update, lr=1e-3, weight_decay=5e-4)
+    optimizer_name = 'Adam'
+    optimizer_ft, lr, weight_decay = initialize_optimizer(
+        optimizer_name, lr=5e-4)
+    log.message_loging(
+        f"Optimizer: {optimizer_name}, lr: {lr:.1e}, weight_decay: {weight_decay:.1e}")
+    print(
+        f"Optimizer: {optimizer_name}, lr: {lr:.1e}, weight_decay: {weight_decay:.1e}")
 
     # Setup the loss fxn
     criterion = nn.CrossEntropyLoss()
+    log.message_loging(f"Loss function: {'Cross Entropy'}")
+    print(f"Loss function: {'Cross Entropy'}")
 
     # Train and evaluate
     model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft,
                                  num_epochs=num_epochs, is_inception=(model_name == "inception"))
 
-    model_path = os.path.join('..', 'model', f'{model_name}_{timestamp}.pkl')
+    model_path = os.path.join(result_dir, f'{model_name}_{timestamp}.pkl')
+    log.message_loging(f"Model store path: {model_path}")
+    print(f"Model store path: {model_path}")
     torch.save(model_ft, model_path)
     # Plot the training curves of validation accuracy vs. number
     #  of training epochs for the transfer learning method and
@@ -311,7 +352,8 @@ if __name__ == '__main__':
     plt.ylim((0, 1.))
     plt.xticks(np.arange(1, num_epochs+1, 1.0))
     plt.legend()
-    # plt.show()
-    fig_path = os.path.join('..', 'result', f'{model_name}_{timestamp}.png')
+    fig_path = os.path.join(result_dir, f'{model_name}_{timestamp}.png')
     plt.savefig(fig_path)
     plt.close('all')
+
+    log.end_loging()

@@ -129,7 +129,7 @@ if __name__ == '__main__':
         Change the model name and timestamp to the model you want to eval.
     """
     model_name = 'swin_transformer_large_384'
-    timestamp = '2021-10-29 14-46-22'
+    timestamp = '2021-10-30 23-41-54'
     model_path = os.path.join('..', 'model', f'{model_name}_{timestamp}.pkl')
     model, input_size = load_model(model_path, model_name)
 
@@ -149,8 +149,8 @@ if __name__ == '__main__':
     model = model.to(device)
 
     """
-        Load the classification classes names and numbers and store as dictionary,
-        such as {class name: class number}.
+        Load the classification classes names and numbers 
+            and store as dictionary, such as {class name: class number}.
     """
     classes_file_path = os.path.join('..', 'data', 'classes.txt')
     load_classes(classes_file_path)
@@ -158,8 +158,9 @@ if __name__ == '__main__':
     """
         Load train classes names and numbers and store as dictionary,
         such as {class number: class name}.
-        This class number is different as above.
-        This class number is according to the order of the class names in window directory order.
+        This class number is different as above. 
+        This class number is according to the order of 
+            the class names in window directory order.
     """
     load_tain_class()
 
