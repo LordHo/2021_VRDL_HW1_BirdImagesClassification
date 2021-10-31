@@ -90,12 +90,50 @@ def load_model(model_path, model_name):
     return model_ft, input_size
 
 
-def eval(model, dataloader, result_path):
+def load_models(model_path_list):
+    model_list = []
+    target_size = None
+    for model_path in model_path_list:
+        model, input_size = load_model(model_path, model_name)
+        if target_size is None:
+            target_size = input_size
+        else:
+            if target_size != input_size:
+                print(
+                    f'Models sizes are different with {target_size} and {input_size}.')
+                exit()
+        model_list.append(model)
+    return model_list, target_size
+
+
+def models2eval(model_list):
+    for i in range(len(model_list)):
+        model_list[i].eval()
+    return model_list
+
+
+def models2device(model_list, device):
+    for i in range(len(model_list)):
+        model_list[i] = model_list[i].to(device)
+    return model_list
+
+
+def ensemble(inputs, model_list):
+    result = None
+    for model in model_list:
+        if result is None:
+            result = model(inputs)
+        else:
+            result = result + model(inputs)
+    return result
+
+
+def eval(model_list, dataloader, result_path):
     # Open the file that store the eval result
     result = open(result_path, 'w')
 
     # Change the model mode to eval mode
-    model.eval()
+    model_list = models2eval(model_list)
 
     # To eval each image according to eval image order
     for index, (inputs, inputs_name) in enumerate(tqdm(dataloader)):
@@ -103,7 +141,8 @@ def eval(model, dataloader, result_path):
         inputs = inputs.to(device)
 
         # eval the image
-        outputs = model(inputs)
+        # outputs = model(inputs)
+        outputs = ensemble(inputs, model_list)
 
         # Take the hightest class number as eval result
         _, preds = torch.max(outputs, 1)
@@ -122,16 +161,18 @@ def eval(model, dataloader, result_path):
 
 
 if __name__ == '__main__':
-    # Create a timestamp for each eval result
-    timestamp = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime())
-
     """ Load trained model
         Change the model name and timestamp to the model you want to eval.
     """
     model_name = 'swin_transformer_large_384'
-    timestamp = '2021-10-30 23-41-54'
-    model_path = os.path.join('..', 'model', f'{model_name}_{timestamp}.pkl')
-    model, input_size = load_model(model_path, model_name)
+    timestamps = ['2021-10-31 19-44-08',
+                  '2021-10-31 17-05-10']
+    model_path_list = []
+    for timestamp in timestamps:
+        model_path = os.path.join(
+            '..', 'model', timestamp, f'{model_name}_{timestamp}.pkl')
+        model_path_list.append(model_path)
+    model_list, input_size = load_models(model_path_list)
 
     # Create evaluation dataset
     eval_image_order_path = os.path.join('..', 'data', 'testing_img_order.txt')
@@ -146,7 +187,8 @@ if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Send the model to GPU
-    model = model.to(device)
+    # model = model.to(device)
+    model_list = models2device(model_list, device)
 
     """
         Load the classification classes names and numbers 
@@ -164,6 +206,9 @@ if __name__ == '__main__':
     """
     load_tain_class()
 
+    # Create a timestamp for each eval result
+    timestamp = time.strftime("%Y-%m-%d %H-%M-%S", time.localtime())
+
     # The directory of the evaluation result stored
     result_dir = os.path.join(
         '..', 'result', f'eval_{model_name}_{timestamp}')
@@ -174,4 +219,4 @@ if __name__ == '__main__':
     result_path = os.path.join(
         result_dir, f'eval_{model_name}_{timestamp}.txt')
 
-    eval(model, eval_dataloader, result_path)
+    eval(model_list, eval_dataloader, result_path)

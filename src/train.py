@@ -4,7 +4,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-from torch.optim import optimizer
 import torchvision
 from torchvision import datasets, models, transforms
 import matplotlib.pyplot as plt
@@ -52,6 +51,10 @@ def initialize_optimizer(optimizer_name, lr=None, weight_decay=None):
     if optimizer_name == 'Adam':
         optimizer = optim.Adam(params_to_update, lr=lr,
                                weight_decay=weight_decay)
+
+    elif optimizer_name == 'SGD':
+        optimizer = optim.SGD(params_to_update, lr=lr, momentum=0.9,
+                              weight_decay=weight_decay)
     else:
         print("Invalid optimizer name, exiting...")
         exit()
@@ -317,9 +320,9 @@ if __name__ == '__main__':
                 print("\t", name)
 
     # Observe that all parameters are being optimized
-    optimizer_name = 'Adam'
+    optimizer_name = 'SGD'
     optimizer_ft, lr, weight_decay = initialize_optimizer(
-        optimizer_name, lr=5e-4)
+        optimizer_name, lr=1e-2)
     log.message_loging(
         f"Optimizer: {optimizer_name}, lr: {lr:.1e}, weight_decay: {weight_decay:.1e}")
     print(
