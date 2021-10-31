@@ -62,7 +62,13 @@ Schedule in future days.
   * CrossEntropyLoss
 
 * **Optimizer**
-  * Adam with learning rate=1e-3 and weight decay=5e-4
+  * I try Adam and SGD in different learning rate and weight decay. The result is in following table.  
+    Momentum of SGD fix at 0.9.
+    | Optimizer | Learning Rate | Weight Decay | Codalab Accuracy | Training Accuracy | Validation Accuracy |
+    | --------- | ------------- | ------------ | ---------------- | ----------------- | ------------------- |
+    | Adam      | 5.0e-04       | 5.0e-05      | 0.728322         | 0.9967            | 0.8983              |
+    | SGD       | 1.0e-03       | 1.0e-04      | -                | 0.6121            | 0.6200              |
+    | SGD       | 1.0e-02       | 1.0e-03      | 0.731949         | 0.9942            | 0.9000              |
 
 * **Epochs**
   * 10 epoch
