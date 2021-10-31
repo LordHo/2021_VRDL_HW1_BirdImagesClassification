@@ -27,11 +27,13 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
     | :--------------: | :---------: |
     |     ResNet50     |     224     |
     |   Inception V3   |     299     |
-    | Swin Transformer |     224     |
-    | Swin Transformer |     384     |
+    | Swin Transformer | 224 or 384  |
 
 * **Data Augmentation**
   * Augmentation on Training part
+    * `transforms.RandomRotation(degrees=(-45, 45))`
+    * `transforms.RandomHorizontalFlip(p=0.5)`
+    * `transforms.RandomVerticalFlip(p=0.5)`
     * `transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])`
   * Augmentation on Validation part
     * `transforms.CenterCrop(target_size)`
@@ -43,7 +45,7 @@ The data contains images similar to those in ImageNet, we use model that has bee
 
 ### Ensemble - Bagging
 
-Schedule in future days.
+Ensemble learning method // TODO
 
 ### Model Architecture
 
