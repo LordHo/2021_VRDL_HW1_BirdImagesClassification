@@ -322,7 +322,7 @@ if __name__ == '__main__':
     # Observe that all parameters are being optimized
     optimizer_name = 'SGD'
     optimizer_ft, lr, weight_decay = initialize_optimizer(
-        optimizer_name, lr=1e-2)
+        optimizer_name, lr=1e-3)
     log.message_loging(
         f"Optimizer: {optimizer_name}, lr: {lr:.1e}, weight_decay: {weight_decay:.1e}")
     print(

@@ -9,3 +9,4 @@ train/*.tmp
 test_timm.py
 src/model_structure
 src/model list.txt
+src/train_test_lr.py
