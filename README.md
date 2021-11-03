@@ -4,7 +4,11 @@ This repository is the HW1 of 2021 Selected Topics in Visual Recognition using D
 
 ## Environment
 
-Framework: [Pytorch](https://pytorch.org/)  
+Framework: [Pytorch](https://pytorch.org/)
+
+## Train and Validation directory structure
+
+![train and validation directory structure](img/train%20and%20validation%20directory%20structure.png)
 
 ## Requirements
 
