@@ -7,8 +7,7 @@ Model Pakage: [PyTorch Image Models](https://github.com/rwightman/pytorch-image-
 
 ## Introdunction
 
-The homework is to classify 200 species of birds. This problem is called fine-grained image classification.
-It's a hard problem in Computer Vision. The data provided from TA is similar as public dataset - [CUB-200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html), but it's not the same. In this homework, it need to use the state-of-the-art models to achieve the high accuracy.
+The homework is to classify 200 species of birds. This problem is called fine-grained image classification. It's a hard problem in Computer Vision. The data provided from TA is similar as public dataset - [CUB-200-2011](http://www.vision.caltech.edu/visipedia/CUB-200-2011.html), but it's not the same. In this homework, it need to use the state-of-the-art models to achieve the high accuracy.
 
 ## Data
 
@@ -19,10 +18,12 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 ### Data preprocessing
 
 * **Split Dataset**
-  * I split the 3,000 training images into training and validation. Training part is 2,400 images, and validation part is 600 images. The model weight is selected by the accuracy of validation.
+  * I split the 3,000 training images into training and validation. Training part is 2,400 images, and validation part is 600 images.  
+    The model weight is selected by the accuracy of validation.
 
 * **Resize Image**
-  * You can select different models, and each of them have different target size. When loading the image, it'll resize the image first. I use `transforms.Resize` to resize the image.
+  * You can select different models, and each of them have different target size. When loading the image, it'll resize the image first.  
+    I use `transforms.Resize` to resize the image.
     |      model       | target size |
     | :--------------: | :---------: |
     |     ResNet50     |     224     |
@@ -43,10 +44,6 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 
 The data contains images similar to those in ImageNet, we use model that has been pretrained on ImageNet. I replace the output of final fully connected layer in model to 200 classes and fine-tune the model to fit our data. In this homework, various state-of-the-art models are tested to get higher performace, such as ResNet-50 [[1]](https://arxiv.org/abs/1512.03385), Inception V3 [[2]](https://arxiv.org/abs/1409.4842), Swin Transformer [[3]](https://arxiv.org/pdf/2103.14030.pdf), etc.
 
-### Ensemble - Bagging
-
-Ensemble learning method // TODO
-
 ### Model Architecture
 
 * **ResNet50**
@@ -64,8 +61,7 @@ Ensemble learning method // TODO
   * CrossEntropyLoss
 
 * **Optimizer**
-  * I try Adam and SGD in different learning rate and weight decay. The result is in following table.  
-    Momentum of SGD fix at 0.9.
+  * I try Adam and SGD in different learning rate and weight decay. The result is in following table. Momentum of SGD fix at 0.9.
     | model                | Optimizer | Learning Rate | Weight Decay | Codalab Accuracy | Training Accuracy | Validation Accuracy |
     | -------------------- | --------- | ------------- | ------------ | ---------------- | ----------------- | ------------------- |
     | swin transformer 384 | Adam      | 5.0e-04       | 5.0e-05      | 0.728322         | 0.9967            | 0.8983              |
@@ -82,13 +78,28 @@ Ensemble learning method // TODO
 * **Epochs**
   * 10 epoch
 
+## Results
+
+Our model achieves the following performance on :
+
+**[2021 VRDL HW1](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07)**
+
+|    Model name    | Pre-trained | image size | Top 1 Accuracy |
+| :--------------: | :---------: | :--------: | :------------: |
+|     ResNet50     |  ImageNet   |    224     |    0.368942    |
+|   Inception V3   |  ImageNet   |    299     |    0.285526    |
+| Swin transformer |  ImageNet   |    224     |    0.712826    |
+| Swin transformer |  ImageNet   |    384     |    0.737554    |
+
 ## Summary
 
-Something not finish yet.
+I select RestNet and Inception that are familiar to me in the begining. However, performance of both model are frustrating. Then, I remember that teacher introducted Vision Transformer and Swin Transformer in class. Swin Transformer performs better than Vision Transformer on ImageNet dataset, so I choose Swin Transformer for my model. After using Swin Transformer, the top 1 accuracy is double as performance by using RestNet. This result excites me a lot. Then, I continue thinking the effect of the Optimizer, so I do a liitle experiment about it.  
+The appropriate learning rate is a range, in that range, the performance is amost the same. However, if we drop the learning rate more, the performance will also drop. I learn that the model can get a enormous progress in performance, so choosing a appropriate model is necessary.
 
 ## References
 
 [1] [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)  
 [2] [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842)  
 [3] [Swin Transformer: Hierarchical Vision Transformer using Shifted Windows](https://arxiv.org/pdf/2103.14030.pdf)  
-[4] [CarClassifier](https://github.com/Yunyung/CarClassifier)
+[4] [CarClassifier](https://github.com/Yunyung/CarClassifier)  
+[5] [FINETUNING TORCHVISION MODELS](https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html)

@@ -52,7 +52,7 @@ You can download pretrained models here:
 
 Our model achieves the following performance on :
 
-#### [2021 VRDL HW1](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07)
+**[2021 VRDL HW1](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07)**
 
 |    Model name    | Pre-trained | image size | Top 1 Accuracy |
 | :--------------: | :---------: | :--------: | :------------: |
