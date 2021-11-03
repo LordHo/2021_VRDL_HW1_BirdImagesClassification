@@ -42,7 +42,7 @@ This project data is from Codalab Competition on class - [2021 VRDL HW1](https:/
 
 ### Transfer Learning
 
-The data contains images similar to those in ImageNet, we use model that has been pretrained on ImageNet. I replace the output of final fully connected layer in model to 200 classes and fine-tune the model to fit our data. In this homework, various state-of-the-art models are tested to get higher performace, such as ResNet-50 [[1]](https://arxiv.org/abs/1512.03385), Inception V3 [[2]](https://arxiv.org/abs/1409.4842), Swin Transformer [[3]](https://arxiv.org/pdf/2103.14030.pdf), etc.
+The data contains images similar to those in ImageNet, we use model that has been pretrained on ImageNet. I replace the output of final fully connected layer in model to 200 classes and fine-tune the model to fit our data. In this homework, various state-of-the-art models are tested to get higher performance, such as ResNet-50 [[1]](https://arxiv.org/abs/1512.03385), Inception V3 [[2]](https://arxiv.org/abs/1409.4842), Swin Transformer [[3]](https://arxiv.org/pdf/2103.14030.pdf), etc.
 
 ### Model Architecture
 
