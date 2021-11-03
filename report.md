@@ -66,11 +66,18 @@ Ensemble learning method // TODO
 * **Optimizer**
   * I try Adam and SGD in different learning rate and weight decay. The result is in following table.  
     Momentum of SGD fix at 0.9.
-    | Optimizer | Learning Rate | Weight Decay | Codalab Accuracy | Training Accuracy | Validation Accuracy |
-    | --------- | ------------- | ------------ | ---------------- | ----------------- | ------------------- |
-    | Adam      | 5.0e-04       | 5.0e-05      | 0.728322         | 0.9967            | 0.8983              |
-    | SGD       | 1.0e-03       | 1.0e-04      | -                | 0.6121            | 0.6200              |
-    | SGD       | 1.0e-02       | 1.0e-03      | 0.731949         | 0.9942            | 0.9000              |
+    | model                | Optimizer | Learning Rate | Weight Decay | Codalab Accuracy | Training Accuracy | Validation Accuracy |
+    | -------------------- | --------- | ------------- | ------------ | ---------------- | ----------------- | ------------------- |
+    | swin transformer 384 | Adam      | 5.0e-04       | 5.0e-05      | 0.728322         | 0.9967            | 0.8983              |
+    |                      | SGD       | 1.0e-02       | 1.0e-03      |                  | 0.9950            | 0.8983              |
+    |                      | SGD       | 8.0e-03       | 8.0e-04      |                  | 0.9967            | 0.8900              |
+    |                      | SGD       | 5.0e-03       | 5.0e-04      |                  | 0.9950            | 0.8967              |
+    |                      | SGD       | 3.0e-03       | 3.0e-04      |                  | 0.9908            | 0.8933              |
+    |                      | SGD       | 1.0e-03       | 1.0e-04      |                  | 0.9646            | 0.8767              |
+    |                      | SGD       | 8.0e-04       | 8.0e-05      |                  | 0.9621            | 0.8600              |
+    |                      | SGD       | 5.0e-04       | 5.0e-05      |                  | 0.9367            | 0.8417              |
+    |                      | SGD       | 3.0e-04       | 3.0e-05      |                  | 0.8896            | 0.8017              |
+    |                      | SGD       | 1.0e-04       | 1.0e-05      |                  | 0.6204            | 0.6150              |
 
 * **Epochs**
   * 10 epoch

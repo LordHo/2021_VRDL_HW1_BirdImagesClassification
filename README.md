@@ -2,7 +2,9 @@
 
 This repository is the HW1 of 2021 Selected Topics in Visual Recognition using Deep Learning in NYCU.
 
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
+## Environment
+
+Framework: [Pytorch](https://pytorch.org/)  
 
 ## Requirements
 
@@ -12,7 +14,11 @@ To install requirements:
 pip install -r requirements.txt
 ```
 
->📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
+To `train.py` and `eval.py` directory:
+
+```src
+cd src
+```
 
 ## Training
 
@@ -22,42 +28,35 @@ To train the model(s) in the project, run this command:
 python train.py
 ```
 
-> Please modify `model_name` to the model you wanted.  
-> Model name can be select in `['resnet', 'inception', 'swin_transformer_base_224', 'swin_transformer_large_384']`.
+> 📋  Please modify `model_name` in `train.py` to the model you wanted.  
+> 📋  Model name can be select in `['resnet', 'inception', 'swin_transformer_base_224', 'swin_transformer_large_384']`.
 
 ## Evaluation
 
 To evaluate my model on ImageNet, run:
 
 ```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
+python eval.py
 ```
 
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
+>📋  Please modify `model_name` in `eval.py` to the model you wanted,  
+>📋  and `timestamp` in `eval.py` to the training weights that you want to load.
 
 ## Pre-trained Models
 
 You can download pretrained models here:
 
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
-
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
+- [My Best Swin Tranformer model](https://drive.google.com/file/d/1mGi_8fKZ5plJixrnPbxnf_OCT_n439WK/view?usp=sharing) pretrained on ImageNet using image size (3, 384, 384).
 
 ## Results
 
 Our model achieves the following performance on :
 
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
+#### [2021 VRDL HW1](https://competitions.codalab.org/competitions/35668?secret_key=09789b13-35ec-4928-ac0f-6c86631dda07)
 
 |    Model name    | Pre-trained | image size | Top 1 Accuracy |
 | :--------------: | :---------: | :--------: | :------------: |
-|     ResNet50     |      -      |    224     |       -        |
-|   Inception V3   |      -      |    299     |       -        |
-| Swin transformer |      -      |    224     |       -        |
-| Swin transformer |      -      |    384     |       -        |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it.
-
-## Contributing
-
->📋  Pick a licence and describe how to contribute to your code repository.
+|     ResNet50     |  ImageNet   |    224     |    0.368942    |
+|   Inception V3   |  ImageNet   |    299     |    0.285526    |
+| Swin transformer |  ImageNet   |    224     |    0.712826    |
+| Swin transformer |  ImageNet   |    384     |    0.737554    |
